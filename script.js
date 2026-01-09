@@ -95,4 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Run animation slightly after load or immediately
   animateCounters();
+  // Dynamic Year
+  const yearElements = document.querySelectorAll('.year');
+  const currentYear = new Date().getFullYear();
+  yearElements.forEach(el => el.textContent = currentYear);
 });
