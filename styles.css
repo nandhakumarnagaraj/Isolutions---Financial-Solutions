@@ -2,33 +2,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* 60% - Dominant Color (Backgrounds) */
-  --secondary: #0f172a;
-  /* Slate 900 */
+  /* 60% - Dominant Color (Backgrounds & Deep Theme) */
+  --secondary: #0B1120;
+  /* Deep Midnight Blue */
+  --bg-dark: #0B1120;
 
-  /* 30% - Secondary Color (Cards, Sections, Headers) */
-  --surface: #1e293b;
-  /* Slate 800 */
-  --surface-light: #334155;
-  /* Slate 700 */
+  /* 30% - Secondary Color (Highlights, Secondary Sections, Creative Surfaces) */
+  --primary: #F59E0B;
+  /* Vibrant Amber/Orange */
+  --primary-dark: #D97706;
+  --primary-light: #FBBF24;
 
-  /* 10% - Accent Color (CTAs, Highlights, Icons) */
-  --primary: #D4AF37;
-  /* Gold */
-  --primary-dark: #B5952F;
-  --primary-light: #FCD34D;
-  --golden: #D4AF37;
-  /* Kept for compatibility */
-
-  /* Text Colors */
-  --text-main: #F8FAFC;
-  /* Slate 50 */
+  /* 10% - Accent Color (CTAs, Clean Text, Highlights) */
+  --accent-light: #FFFFFF;
+  /* Pure White */
+  --text-main: #FFFFFF;
   --text-muted: #94A3B8;
-  /* Slate 400 */
+  --surface: #1E293B;
+  /* Surface for cards */
+  --surface-light: #334155;
 
+  /* UI Tokens */
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global utility adjustments for the new scheme */
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+  color: var(--secondary) !important;
+}
+
+.btn-gold {
+  background: var(--primary);
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+.btn-gold:hover {
+  background: var(--primary-light);
+  color: var(--secondary);
 }
 
 * {
@@ -509,16 +527,45 @@ header .container {
 
 .single-offer {
   background: var(--surface);
-  padding: 2rem;
-  border-radius: 12px;
+  padding: 3rem 2rem;
+  border-radius: 20px;
   text-align: center;
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.single-offer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transition: var(--transition);
+}
+
+.single-offer>* {
+  position: relative;
+  z-index: 1;
 }
 
 .single-offer:hover {
   transform: translateY(-10px);
   background: var(--surface-light);
+  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.single-offer:hover::before {
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
 }
 
 .single-offer img {
@@ -538,19 +585,105 @@ header .container {
 
 /* Quote */
 .quote-section {
-  background: var(--surface);
-  padding: 4rem 0;
-  text-align: center;
+  background: #0B1120;
+  padding: clamp(4rem, 10vh, 6rem) 0;
   margin: 4rem 0;
-  border-top: 1px solid var(--primary-dark);
+  color: #FFFFFF;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.quote-content blockquote {
-  font-size: 1.1rem;
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .quote-grid {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+  }
+}
+
+.quote-left {
+  border-left: 3px solid #F59E0B;
+  padding-left: 2rem;
+  text-align: left;
+}
+
+.quote-left p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #94A3B8;
+  margin: 0;
+}
+
+.quote-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.quote-heading-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.quote-right h3 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #FFFFFF;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+/* Decorative Orange Rectangles (Quote Markers) */
+.quote-heading-wrapper::before,
+.quote-heading-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 12px;
+  background: #F59E0B;
+  transform: rotate(-45deg);
+}
+
+.quote-heading-wrapper::before {
+  top: -15px;
+  left: 0;
+}
+
+.quote-heading-wrapper::after {
+  bottom: -15px;
+  right: 0;
+}
+
+.quote-author-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.author-line {
+  height: 2px;
+  background: #F59E0B;
+  flex: 0 1 150px;
+}
+
+.quote-author-row p {
+  color: #F59E0B;
   font-style: italic;
-  color: var(--text-muted);
-  max-width: 800px;
-  margin: 0 auto 2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
 }
 
 /* Products/Segments */
@@ -775,4 +908,4 @@ footer .container {
   .mobile-toggle {
     display: block;
   }
-}
+}@keyframes float { 0% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0, 0) scale(1); } } .glow-blob { position: fixed; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); z-index: -3; opacity: 0.12; pointer-events: none; animation: float 25s infinite ease-in-out; } .blob-1 { background: #3B82F6; top: -10%; left: -10%; } .blob-2 { background: #F59E0B; bottom: -10%; right: -10%; animation-delay: -5s; } .blob-3 { background: #8B5CF6; top: 30%; left: 40%; animation-delay: -10s; } .single-offer { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); } .single-offer:nth-child(1):hover { border-color: #3B82F6; box-shadow: 0 0 30px rgba(59, 130, 246, 0.2); } .single-offer:nth-child(2):hover { border-color: #F59E0B; box-shadow: 0 0 30px rgba(245, 158, 11, 0.2); } .single-offer:nth-child(3):hover { border-color: #10B981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); } .single-offer:hover img { filter: drop-shadow(0 0 15px currentColor); }
