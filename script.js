@@ -107,6 +107,57 @@ document.addEventListener('DOMContentLoaded', () => {
     window.requestAnimationFrame(step);
   }
 
+  // Contact Form Submission
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(contactForm);
+      const submitBtn = contactForm.querySelector('button');
+      const originalBtnText = submitBtn.innerText;
+
+      // Loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      formStatus.style.display = 'none';
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          formStatus.style.display = 'block';
+          formStatus.style.color = '#10b981'; // Success Green
+          formStatus.innerText = 'Thank you! Your message has been sent successfully.';
+          contactForm.reset();
+        } else {
+          const data = await response.json();
+          formStatus.style.display = 'block';
+          formStatus.style.color = '#ef4444'; // Error Red
+          if (data.errors) {
+            formStatus.innerText = data.errors.map(error => error.message).join(', ');
+          } else {
+            formStatus.innerText = 'Oops! There was a problem submitting your form.';
+          }
+        }
+      } catch (error) {
+        formStatus.style.display = 'block';
+        formStatus.style.color = '#ef4444';
+        formStatus.innerText = 'Oops! There was a problem submitting your form.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+      }
+    });
+  }
+
   // Dynamic Year
   const yearElements = document.querySelectorAll('.year');
   const currentYear = new Date().getFullYear();

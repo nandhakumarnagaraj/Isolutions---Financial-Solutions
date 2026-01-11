@@ -62,11 +62,13 @@
         <!-- Contact Form -->
         <div class="animate" style="background: var(--surface); padding: 40px; border-radius: 12px; height: 500px;">
           <h3 style="color:var(--primary); margin-bottom: 20px;">Get in Touch</h3>
-          <form action="#" method="post">
-            <input type="text" class="form-control" placeholder="Your Name" required>
-            <input type="email" class="form-control" placeholder="Your Email" required>
-            <input type="text" class="form-control" placeholder="Phone Number">
-            <textarea class="form-control" rows="5" placeholder="Your Message" style="resize: none;"></textarea>
+          <form id="contact-form" action="https://formspree.io/f/xykkgqow" method="POST">
+            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+            <input type="text" name="phone" class="form-control" placeholder="Phone Number">
+            <textarea name="message" class="form-control" rows="5" placeholder="Your Message" style="resize: none;"
+              required></textarea>
+            <div id="form-status" style="margin-bottom: 15px; display: none;"></div>
             <button type="submit" class="btn">Send Message</button>
           </form>
         </div>
