@@ -49,6 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+
+        // Trigger counter animation if hero content is visible
+        if (entry.target.classList.contains('hero-content')) {
+          animateCounters();
+        }
+
         observer.unobserve(entry.target); // Only animate once
       }
     });
@@ -69,32 +75,38 @@ document.addEventListener('DOMContentLoaded', () => {
       header.style.boxShadow = 'none';
     }
   });
+
   // Counter Animation
   const counters = document.querySelectorAll('.counter');
-  const speed = 500; // Increased steps for slower, smoother animation
 
-  const animateCounters = () => {
-    counters.forEach(counter => {
-      const updateCount = () => {
-        const target = +counter.getAttribute('data-target');
-        const count = +counter.innerText;
+  function animateCounters() {
+    const duration = 5000; // 5 seconds
+    let startTimestamp = null;
 
-        // Calculate increment step
-        const inc = target / speed;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
 
-        if (count < target) {
-          counter.innerText = Math.ceil(count + inc);
-          setTimeout(updateCount, 60);
-        } else {
-          counter.innerText = target;
-        }
-      };
-      updateCount();
-    });
-  };
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const current = Math.floor(progress * target);
 
-  // Run animation slightly after load or immediately
-  animateCounters();
+        // Format large numbers with commas if needed (optional but premium)
+        counter.innerText = current;
+      });
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        counters.forEach(counter => {
+          counter.innerText = counter.getAttribute('data-target');
+        });
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  }
+
   // Dynamic Year
   const yearElements = document.querySelectorAll('.year');
   const currentYear = new Date().getFullYear();
