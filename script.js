@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const counters = document.querySelectorAll('.counter');
 
   function animateCounters() {
-    const duration = 5000; // 5 seconds
+    const duration = 3000; // 3 seconds
     let startTimestamp = null;
 
     const step = (timestamp) => {
@@ -92,14 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const current = Math.floor(progress * target);
 
         // Format large numbers with commas if needed (optional but premium)
-        counter.innerText = current;
+        counter.innerText = current.toLocaleString();
       });
 
       if (progress < 1) {
         window.requestAnimationFrame(step);
       } else {
         counters.forEach(counter => {
-          counter.innerText = counter.getAttribute('data-target');
+          const target = parseInt(counter.getAttribute('data-target'));
+          counter.innerText = target.toLocaleString();
         });
       }
     };
